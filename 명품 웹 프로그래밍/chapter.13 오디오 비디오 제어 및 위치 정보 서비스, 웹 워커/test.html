@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>학점 매기기</title>
+</head>
+<body>
+	<h3>학점 매기기</h3>
+	<hr>
+	<button class="button" value="score_input" onclick="score()"> 점수 입력 </button>
+
+	<div>
+	<span id="input_score"></span><span id="result"></span>
+	</div>
+
+	<script>
+		// addWorker 워커 객체 생성 및 워커 태스크 시작
+		var addWorker = new Worker("send0to100.js");
+
+		function send() { // 워크 태스크에 시작 숫자와 끝 숫자 전송
+			var parameters = {
+				num: document.getElementById("temp");
+			};
+
+			// 시작 숫자와 끝 숫자를 담은 객체를 워커 태스크로 전송
+			addWorker.postMessage(parameters);
+		}
+
+		// 워크 태스크로부터 message 이벤트 수신
+		addWorker.onmessage = function(e){ // e는 MessageEvent 객체
+			// 워커 태스크로부터 전달받은 결과 출력
+			document.getElementById("result").innerHTML = e.data;
+			document.getElementById("input_score").innerHTML = temp;
+		}
+
+		function score(){
+			let temp = prompt("점수를 숫자로 입력하세요", "");
+		}
+	</script>
+</body>
+</html>
